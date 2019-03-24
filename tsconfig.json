@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true,
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "lib": [
+      "es2017",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

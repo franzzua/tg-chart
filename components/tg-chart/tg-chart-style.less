@@ -1,0 +1,271 @@
+@import "animate";
+@time: .3s;
+tg-chart {
+  display: block;
+  max-width: 90vh;
+  width: 100vw;
+  margin: 5vh auto;
+  position: relative;
+  box-sizing: border-box;
+  font-family: Tahoma, serif;
+
+  .light {
+    @bg: #ffffff;
+    @color: #222222;
+    @hoverBg: #ffffff;
+    @hoverShadow: #d6d4d4;
+    @moveColor: rgba(221, 234, 243, 0.67);
+    @blurColor: rgba(245, 249, 251, 0.67);
+    @ordinateColor: #96a2aa;
+
+    .chart(@bg, @color);
+    .hover-table(@hoverBg, @hoverShadow);
+    .chart-svg(@bg, @ordinateColor);
+    .timeline(@moveColor, @blurColor);
+    .checkers(@ordinateColor, @bg);
+    .theme-button();
+  }
+
+  .dark {
+    @bg: #242f3e;
+    @color: #ffffff;
+    @hoverBg: #253241;
+    @hoverShadow: #1e2834;
+    @moveColor: rgba(64, 86, 107, 0.67);
+    @blurColor: rgba(31, 42, 56, 0.67);
+    @ordinateColor: #526475;
+
+    .chart(@bg, @color);
+    .hover-table(@hoverBg, @hoverShadow);
+    .chart-svg(@bg, @ordinateColor);
+    .timeline(@moveColor, @blurColor);
+    .checkers(@ordinateColor, @bg);
+    .theme-button();
+  }
+}
+
+.chart(@bg,  @color) {
+  background: @bg;
+  color: @color;
+  display: flex;
+  flex-direction: column;
+  > header {
+    font-size: 36px;
+    padding: .2em 1em;
+  }
+  .plot {
+    width: 100%;
+    height: 70vw;
+  }
+
+}
+
+.hover-table(@hoverBg, @hoverShadow) {
+  .hover-table {
+    &[is-visible=false] {
+      opacity: 0;
+    }
+    position: absolute;
+    top: 10px;
+    margin-left: -4em;
+    background: @hoverBg;
+    border-radius: .3em;
+    box-shadow: 1px 1px 4px 1px @hoverShadow;
+    padding: .2em .5em;
+    header {
+      font-size: 18px;
+    }
+    .values {
+      display: flex;
+      justify-content: space-between;
+      > div {
+        padding: .5em 1em;
+      }
+    }
+  }
+}
+
+.checkers(@borderColor, @bg) {
+  .checkers {
+    display: flex;
+    flex-direction: row;
+
+    .checker {
+      display: flex;
+      height: 3em;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      padding: .5em 1em;
+      border-radius: 2em;
+      border: solid 1px @borderColor;
+      margin: .5em 1em;
+      box-sizing: border-box;
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0 0 1px 1px @borderColor;
+      }
+      &:active {
+        box-shadow: 0 0 2px 2px @borderColor;
+      }
+      &:before {
+        content: '✓';
+        font-weight: bold;
+        display: block;
+        position: absolute;
+        left: 1.7em;
+        color: @bg;
+      }
+      input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        display: block;
+        height: 2em;
+        width: 2em;
+        background: transparent;
+        border: solid 3px;
+        border-radius: 100%;
+        box-sizing: border-box;
+        transition: @time ease-out;
+        outline: none;
+        &:checked {
+          border-width: 1em;
+        }
+      }
+      span {
+        margin: 0 1em;
+      }
+    }
+  }
+}
+
+.chart-svg(@bg,@ordinateColor) {
+  svg {
+    [disable=true] {
+      display: none;
+    }
+    [transform] {
+      transform-origin: 0 0;
+      transition: transform @time linear;
+      will-change: transform;
+      &[d]{
+        transition: none;
+      }
+    }
+    path, line {
+      vector-effect: non-scaling-stroke;
+      &[hidden=true] {
+        stroke: transparent;
+      }
+    }
+
+    [abscisses] {
+      fill: @ordinateColor;
+      [moving]{
+        fill: darkred;
+      }
+
+      dominant-baseline: text-before-edge;
+       text {
+        text-anchor: middle;
+      }
+    }
+
+    [ordinates] {
+      text {
+        font-size: 1em;
+        fill: @ordinateColor;
+      }
+      line {
+        stroke: @ordinateColor;
+      }
+      text, line {
+        //transition: @time ease-out;
+      }
+      &.new {
+        line {
+          animation: onStroke @time ease-out;
+        }
+        text {
+          animation: onFill @time ease-out;
+        }
+      }
+      &.delete {
+        text, line {
+          transition: @time ease-in;
+        }
+        text {
+          fill: transparent;
+        }
+        line {
+          stroke: transparent;
+        }
+      }
+
+    }
+    [hover] {
+      transition: @time ease-out;
+      &[hidden=true] {
+        opacity: 0;
+      }
+      circle {
+        fill: @bg;
+      }
+      line {
+        stroke: @ordinateColor;
+      }
+    }
+  }
+
+}
+
+.timeline(@moveColor, @blurColor) {
+  [timeline] {
+    position: relative;
+    height: 10vw;
+    > * {
+      position: absolute;
+      top: 0;
+    }
+
+    [dir] {
+      height: 100%;
+      width: 1%;
+      background: @moveColor;
+    }
+    [dir=center] {
+      background: transparent;
+      box-sizing: border-box;
+      border: solid 0 @moveColor;
+      border-top-width: .1em;
+      border-bottom-width: .1em;
+      cursor: move;
+    }
+    [dir=left], [dir=right] {
+      width: 2%;
+
+      background: transparent;
+      cursor: col-resize;
+    }
+    [blur] {
+      height: 100%;
+      background: @blurColor;
+    }
+
+    canvas {
+      pointer-events: none;
+    }
+  }
+}
+
+.theme-button() {
+  .theme-button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #359fe4;
+    padding: 1em 2em;
+    background: none;
+    font-size: 1.5em;
+  }
+}

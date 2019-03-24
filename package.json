@@ -1,0 +1,35 @@
+{
+  "scripts": {
+    "run": "parcel index.html",
+    "rollup": "rollup -c rollup.config.js --watch",
+    "server": "hypertype server run --watch",
+    "server:prod": "hypertype server --stats --prod",
+    "build": "rmdir /S /Q dist && parcel build index.html"
+  },
+  "devDependencies": {
+    "less": "^3.9.0",
+    "parcel-bundler": "^1.12.0",
+    "rollup": "^1.6.0",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-typescript": "^1.0.0",
+    "rollup-plugin-uglify": "^6.0.2",
+    "tslib": "^1.9.3",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "@hypertype/tools": "^1.0.26",
+    "hyperhtml": "^2.25.4",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
+    "resize-observer": "^1.0.0",
+    "voronoi": "git+https://github.com/gorhill/Javascript-Voronoi.git"
+  },
+  "hypertype": {
+    "server": {
+      "index": "./index.ts",
+      "html": "./index.html",
+      "port": 3000,
+      "publicPath": "/"
+    }
+  }
+}
