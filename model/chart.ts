@@ -123,13 +123,16 @@ export class Chart {
 
         if (!this.moveStart)
             this.moveStart = {left: this.left, right: this.right};
-        const absciss =  new TransformMatrix()
-                .Scale(width, 1)
-                .Scale((this.moveStart.right - this.moveStart.left) / (this.right - this.left), 1)
-                .Translate(this.moveStart.left / (this.moveStart.right - this.moveStart.left), 0)
-                .Scale(1 / (this.moveStart.right - this.moveStart.left), 1)
-                .Translate(-this.moveStart.left, 0);
 
+        const absciss = this.last == "right"  ?
+            new TransformMatrix()
+                .Translate(width, 0)
+                .Scale((this.moveStart.right - this.moveStart.left) / (this.right - this.left), 1)
+                .Translate(-this.moveStart.right * width / (this.moveStart.right - this.moveStart.left), 0) :
+            new TransformMatrix()
+                // .Translate(-this.left / (this.right - this.left) * width, 0)
+                .Scale(1 / (this.right - this.left) * (this.moveStart.right - this.moveStart.left), 1)
+                .Translate(this.moveStart.left / (this.moveStart.right - this.moveStart.left) * width, 0);
         return {
             total: new TransformMatrix()
                 .Scale(width / (this.right - this.left), height / (max - min))
