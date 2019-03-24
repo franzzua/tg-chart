@@ -46,6 +46,6 @@ export function getPlot(chart: Chart, rect: ClientRect, isMoving) {
                 `)}
             </g>
         </g>
-       ${getAbscisses(chart, rect, isMoving)}
+       ${getAbscisses(chart, rect, isMoving, transform)}
 `;
 }

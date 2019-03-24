@@ -120,12 +120,25 @@ export class Chart {
         const {min, max} = this.getMinMax(this.left, this.right);
         const from = +this.x[0] + this.duration * this.left;
         const to = +this.x[0] + this.duration * this.right;
+
+
+        if (!this.moveStart)
+            this.moveStart = {left: this.left, right: this.right};
+        const absciss = this.last == "right" ? new TransformMatrix()
+                .Translate((1 + this.left - this.right / (this.right - this.left)) * width, 0)
+                .Scale(1 / (this.right - this.left) * (this.moveStart.right - this.moveStart.left), 1)
+                .Translate((this.moveStart.right / (this.moveStart.right - this.moveStart.left) - 1) * width, 0)
+            : new TransformMatrix()
+                .Scale(1 / (this.right - this.left) * (this.moveStart.right - this.moveStart.left), 1)
+                .Translate(this.moveStart.left / (this.moveStart.right - this.moveStart.left) * width, 0);
+
         return {
             total: new TransformMatrix()
                 .Scale(width / (this.right - this.left), height / (max - min))
                 .Translate(-this.left, max),
             x: TransformMatrix.Translate(-this.left, 0),
             y: TransformMatrix.Translate(0, max),
+            absciss,
             yScaled: TransformMatrix.Translate(0, max * height / (max - min)),
             xScaled: TransformMatrix.Translate(-this.left * width / (this.right - this.left), 0),
             xScale: TransformMatrix
