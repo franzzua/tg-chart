@@ -121,16 +121,14 @@ export class Chart {
         const from = +this.x[0] + this.duration * this.left;
         const to = +this.x[0] + this.duration * this.right;
 
-
         if (!this.moveStart)
             this.moveStart = {left: this.left, right: this.right};
-        const absciss = this.last == "right" ? new TransformMatrix()
-                .Translate((1 + this.left - this.right / (this.right - this.left)) * width, 0)
-                .Scale(1 / (this.right - this.left) * (this.moveStart.right - this.moveStart.left), 1)
-                .Translate((this.moveStart.right / (this.moveStart.right - this.moveStart.left) - 1) * width, 0)
-            : new TransformMatrix()
-                .Scale(1 / (this.right - this.left) * (this.moveStart.right - this.moveStart.left), 1)
-                .Translate(this.moveStart.left / (this.moveStart.right - this.moveStart.left) * width, 0);
+        const absciss =  new TransformMatrix()
+                .Scale(width, 1)
+                .Scale((this.moveStart.right - this.moveStart.left) / (this.right - this.left), 1)
+                .Translate(this.moveStart.left / (this.moveStart.right - this.moveStart.left), 0)
+                .Scale(1 / (this.moveStart.right - this.moveStart.left), 1)
+                .Translate(-this.moveStart.left, 0);
 
         return {
             total: new TransformMatrix()
@@ -162,6 +160,6 @@ export class Chart {
     }
 
     getX(date: Date, left = this.left, right = this.right) {
-        return (((+date - +this.x[0]) / this.duration) - left) / (right - left);
+        return (+date - +this.x[0]) / this.duration;
     }
 }
