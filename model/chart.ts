@@ -123,16 +123,10 @@ export class Chart {
 
         if (!this.moveStart)
             this.moveStart = {left: this.left, right: this.right};
+        const absciss =new TransformMatrix()
+            .Scale(1 / (this.right - this.left), 1)
+            .Translate(-this.moveStart.left * width, 0)
 
-        const absciss = this.last == "right"  ?
-            new TransformMatrix()
-                .Translate(width, 0)
-                .Scale((this.moveStart.right - this.moveStart.left) / (this.right - this.left), 1)
-                .Translate(-this.moveStart.right * width / (this.moveStart.right - this.moveStart.left), 0) :
-            new TransformMatrix()
-                // .Translate(-this.left / (this.right - this.left) * width, 0)
-                .Scale(1 / (this.right - this.left) * (this.moveStart.right - this.moveStart.left), 1)
-                .Translate(this.moveStart.left / (this.moveStart.right - this.moveStart.left) * width, 0);
         return {
             total: new TransformMatrix()
                 .Scale(width / (this.right - this.left), height / (max - min))
@@ -141,9 +135,7 @@ export class Chart {
             y: TransformMatrix.Translate(0, max),
             absciss,
             yScaled: TransformMatrix.Translate(0, max * height / (max - min)),
-            xScaled: this.last == 'left'
-                ? TransformMatrix.Translate(-this.left * width / (this.right - this.left), 0)
-                : TransformMatrix.Translate(-this.right * width / (this.right - this.left), 0),
+            xScaled: TransformMatrix.Translate((this.moveStart.left - this.left) * width / (this.right - this.left), 0),
             xScale: TransformMatrix
             // .Translate(this.last == 'left' ? width : 0, 0)
                 .Scale(width / (this.right - this.left), 1),

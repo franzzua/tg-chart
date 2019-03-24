@@ -148,6 +148,9 @@ tg-chart {
       transform-origin: 0 0;
       transition: transform @time linear;
       will-change: transform;
+      &[delay=true]{
+        transition-delay: .5s;
+      }
       &[d]{
         transition: none;
       }
