@@ -138,7 +138,9 @@ export class Chart {
             y: TransformMatrix.Translate(0, max),
             absciss,
             yScaled: TransformMatrix.Translate(0, max * height / (max - min)),
-            xScaled: TransformMatrix.Translate(-this.left * width / (this.right - this.left), 0),
+            xScaled: this.last == 'left'
+                ? TransformMatrix.Translate(-this.left * width / (this.right - this.left), 0)
+                : TransformMatrix.Translate(-this.right * width / (this.right - this.left), 0),
             xScale: TransformMatrix
             // .Translate(this.last == 'left' ? width : 0, 0)
                 .Scale(width / (this.right - this.left), 1),
