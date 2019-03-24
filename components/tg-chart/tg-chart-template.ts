@@ -1,8 +1,6 @@
 import {IHandler} from "../../base/component";
 import {IEvents, IState} from "./tg-chart-component";
-import {getAbscisses} from "./absciss";
 import {getHover, getHoverTable} from "./hover";
-import {getOrdinates} from "./ordinate";
 import {getPlot} from "./plot";
 import {getTimeline} from "./timeline";
 import {getSwitchers} from "./switchers";
