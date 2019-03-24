@@ -182,26 +182,6 @@ tg-chart {
       text, line {
         //transition: @time ease-out;
       }
-      &.new {
-        line {
-          animation: onStroke @time ease-out;
-        }
-        text {
-          animation: onFill @time ease-out;
-        }
-      }
-      &.delete {
-        text, line {
-          transition: @time ease-in;
-        }
-        text {
-          fill: transparent;
-        }
-        line {
-          stroke: transparent;
-        }
-      }
-
     }
     [hover] {
       transition: @time ease-out;

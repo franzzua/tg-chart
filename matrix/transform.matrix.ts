@@ -1,6 +1,13 @@
 import {Matrix} from "./matrix";
 
 export class TransformMatrix {
+    Invoke(x, y): any {
+        const m = this.Matrix.Invoke({X: x, Y: y});
+        return {
+            X: m.X + this.Shift.X,
+            Y: m.Y + this.Shift.Y
+        };
+    }
 
     public Matrix = new Matrix();
     public Shift = {X: 0, Y: 0};
@@ -22,6 +29,11 @@ export class TransformMatrix {
         return result;
     }
 
+    public getTranslation(x, y){
+        const result = new TransformMatrix();
+        result.Shift = this.Apply(TransformMatrix.Translate(x,y)).Shift;
+        return result;
+    }
     public Apply(matrix: TransformMatrix) {
         const result = new TransformMatrix();
         const shift = this.Matrix.Invoke(matrix.Shift);

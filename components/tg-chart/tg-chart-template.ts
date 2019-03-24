@@ -18,8 +18,6 @@ export const template = (render, state: IState, events: IHandler<IEvents>) => {
              onmouseleave="${events.hover(e => null)}"
              style="${{height: state.rect.width * .7 + 40 + 'px'}}">
             ${getPlot(state.chart, state.rect, state.isMoving)}
-            ${' ' || getAbscisses(state.chart, state.rect)}
-            ${' ' || getOrdinates(state.chart, state.rect)}
             ${getHover(state.chart, state.rect)}
             </g>
         </svg>
